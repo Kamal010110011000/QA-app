@@ -13,37 +13,38 @@
                             <a href="{{ route('question.index') }}" class="btn btn-outline-secondary">Back To All Questions</a>
                         </div>
                     </div>
-                <hr>
                 </div>
+
+                <hr>
 
                 <div class="media">
                     <div class="flex-column d-flex vote-controls">
                     <a title='This question is useful' href="" class="vote-up">
-                        Vote up
+                        <i class="fa-caret-up fas fa-3x">UP</i>
                     </a>
                     <span class="vote-count">1230</span>
                     <a title='The question is not useful' href="" class="vote-down off">
-                        Vote down
+                    <i class="fa-star fas fa-3x">DOWN</i>
                     </a>
-                    <a href="" title='Click to mark as favorite question (Clickagain to undo)' class="favorite">
-                        favorite
-                        <span class="favorites-count"></span>
+                    <a href="" title='Click to mark as favorite question (Clickagain to undo)' class="favorite mt-2 favorited">
+                    <i class="fa-caret-up fas fa-2x">STAR</i>
+                        <span class="favorites-count">234</span>
                     </a>
+                </div>
                     <div class="media-body">
                         {!! $question->body_html !!}
-                     <div class="float-right">
-                                        <span class="text-muted">Answered  {{$question->created_date}}</span>
-                                        <div class="media mt-2">
-                                            <a href="{{$question->user->url}}" class="pr-2">
-                                                <img src="{{$question->user->url}}" alt="">
-                                            </a>
-                                            <div class="media-body mt-1">
-                                                <a href="{{ $question->user->url}}">{{ $question->user->name }}</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                     </div>
-                     </div>
+                        <div class="float-right">
+                            <span class="text-muted">Answered  {{$question->created_date}}</span>
+                            <div class="media mt-2">
+                                <a href="{{$question->user->url}}" class="pr-2">
+                                    <img src="{{$question->user->url}}" alt="">
+                                </a>
+                                <div class="media-body mt-1">
+                                    <a href="{{ $question->user->url}}">{{ $question->user->name }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -59,6 +60,18 @@
                     <hr>
                     @foreach($question->answers as $answer)
                         <div class="media">
+                                    <div class="flex-column d-flex vote-controls">
+                                <a title='This answer is useful' href="" class="vote-up">
+                                    <i class="fa-caret-up fas fa-3x">UP</i>
+                                </a>
+                                <span class="vote-count">1230</span>
+                                <a title='The answer is not useful' href="" class="vote-down off">
+                                <i class="fa-caret-down fas fa-3x">DOWN</i>
+                                </a>
+                                <a href="" title='Mark this as Best answer' class="vote-accepted mt-2">
+                                <i class="fa-check fas fa-2x">STAR</i>
+                                </a>
+                        </div>
                             <div class="media-body">
                                 {!! $answer->body_html !!}
                                 <div class="float-right">
