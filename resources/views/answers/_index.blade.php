@@ -10,17 +10,47 @@
 
                     @foreach($answers as $answer)
                         <div class="media">
-                                    <div class="flex-column d-flex vote-controls">
-                                <a title='This answer is useful' href="" class="vote-up">
-                                    <i class="fa-caret-up fas fa-3x">UP</i>
-                                </a>
-                                <span class="vote-count">1230</span>
-                                <a title='The answer is not useful' href="" class="vote-down off">
-                                <i class="fa-caret-down fas fa-3x">DOWN</i>
-                                </a>
-                                <a href="" title='Mark this as Best answer' class="{{ $answer->status }} mt-2">
-                                <i class="fa-check fas fa-2x">{{ $answer->status }}</i>
-                                </a>
+                            <div class="flex-column d-flex vote-controls">
+                            <a title='This answer is useful' href="" 
+                    class="vote-up {{ Auth :: guest() ? 'off' : '' }}"
+                    onclick="event.preventDefault(); document.getElementById('up-vote-answer-{{ $answer->id }}').submit();"
+                    >
+                        <i class="fa-caret-up fas fa-3x">UP</i>
+                    </a>
+                    <form action="/answers/{{$answer->id}}/vote" id="up-vote-answer-{{ $answer->id }}" method="POST" style="display:none">
+                    @csrf
+                    <input type="hidden" name="vote" value="1">
+                    </form>
+                    <span class="vote-count">{{$answer->votes_count}}</span>
+                    <a title='The answer is not useful' href="" 
+                    class="vote-down {{ Auth :: guest() ? 'off' : '' }}"
+                    onclick="event.preventDefault(); document.getElementById('down-vote-answer-{{ $answer->id }}').submit();"
+                    >
+                    <i class="fa-star fas fa-3x">DOWN</i>
+                    </a>
+                    <form action="/answers/{{$answer->id}}/vote" id="down-vote-answer-{{ $answer->id }}" method="POST" style="display:none">
+                    @csrf
+                    <input type="hidden" name="vote" value="-1">
+                    </form>
+                                @can('accept',$answer)
+                                    <a href="" title='Mark this as Best answer'
+                                        class="{{ $answer->status }} mt-2"
+                                        onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit();"
+                                        >
+                                        <i class="fa-check fas fa-2x">ac:{{ $answer->status }}</i>
+                                    </a>
+                                    <form action="{{route('answers.accept', $answer->id)}}" id="accept-answer-{{$answer->id}}" method="POST" style="display:none">
+                                        @csrf
+                                    </form>
+                                @else
+                                    @if($answer->is_best)
+                                    <a href="" title='The question owner accepted this as Best answer'
+                                        class="{{ $answer->status }} mt-2"
+                                        >
+                                        <i class="fa-check fas fa-2x">ac:{{ $answer->status }}</i>
+                                    </a>
+                                    @endif
+                                @endcan
                         </div>
                             <div class="media-body">
                                 {!! $answer->body_html !!}
