@@ -8,7 +8,7 @@ use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
 {
-    public function _construct(){
+    public function __construct(){
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
@@ -73,9 +73,7 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        if(\Gate::denies('update-question',$question)){
-            abort(403, 'Asscess Denied');
-        }
+        $this->authorize('update', $question);
         return view("questions.edit",compact('question'));
     }
 
@@ -88,9 +86,7 @@ class QuestionsController extends Controller
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
-        if(\Gate::denies('update-question',$question)){
-            abort(403, 'Asscess Denied');
-        }
+        $this->authorize('update', $question);
         $question->update($request->only('title' , 'body'));
 
         return redirect('/question')->with('success',"Your question is updated");
@@ -104,9 +100,7 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
-        if(\Gate::denies('delete-question',$question)){
-            abort(403, 'Asscess Denied');
-        }
+        $this->authorize('update', $question);
         $question->delete();
 
         return redirect('/question')->with('success','your question has been deleted.');
